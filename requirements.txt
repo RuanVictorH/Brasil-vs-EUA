@@ -1,0 +1,8 @@
+pandas
+requests
+matplotlib
+seaborn
+jupyter
+nbformat
+python-dotenv
+streamlit

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brasil-eua-em-numeros.vercel.app/sitemap.xml

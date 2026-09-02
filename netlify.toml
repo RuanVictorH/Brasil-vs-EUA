@@ -1,0 +1,16 @@
+# Config de deploy pro Netlify. O projeto React fica em web/ (não na raiz
+# do repositório), por isso "base" aponta pra lá — o Netlify roda o build
+# de dentro de web/ e publica web/dist/.
+
+[build]
+  base = "web"
+  command = "npm run build"
+  publish = "dist"
+
+# Fallback de rota pro React Router — sem isso, abrir /estados direto
+# (sem passar pela home) dá 404, porque essas rotas não existem como
+# arquivos reais, só existem depois que o JavaScript do React roda.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,37 @@
+# ---- Python (pipeline de dados) ----
+.venv/
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
+
+# Dados coletados (gerados pelos scripts em src/, não versionados)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# ---- Node / React (web/) ----
+# web/ tem seu próprio .gitignore com as mesmas regras; repetido aqui
+# como rede de segurança caso algo rode fora dela.
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---- Editor / SO ----
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
