@@ -43,11 +43,12 @@ with st.expander("Fontes e ressalvas metodológicas"):
     st.markdown(
         "- **Brasil**: API SIDRA/IBGE — 27 UFs\n"
         "- **EUA**: US Census Bureau (ACS 5-Year 2022 + Gazetteer Files) — 50 estados + DC\n\n"
-        "Renda usa metodologias diferentes entre os países (individual/mensal "
-        "em `R$` no Brasil vs. domiciliar/anual mediana em `US$` nos EUA), por "
-        "isso é comparada como **índice relativo à média do próprio país** "
-        "(`renda_indice_relativo`), não em valor bruto. Detalhes completos em "
-        "`notebooks/analise.ipynb`."
+        "Renda foi harmonizada para **base mensal e escopo individual** em ambos os países "
+        "(PNAD Contínua no Brasil vs. ACS 5-Year B20002 anualizado/12 nos EUA). "
+        "Além dos valores mensais em moeda local, o dataset dispõe de conversão em Dólar Nominal (USD), "
+        "Poder de Compra (PPP) e do **índice relativo à média do próprio país** "
+        "(`renda_indice_relativo`), que permite comparar a dispersão da renda entre as federações. "
+        "Detalhes metodológicos em `notebooks/analise.ipynb`."
     )
 
 col1, col2, col3, col4 = st.columns(4)

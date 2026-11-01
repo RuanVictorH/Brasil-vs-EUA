@@ -78,6 +78,8 @@ def get_acs_indicadores(api_key: str | None = None) -> pd.DataFrame:
         "NAME",
         "B01003_001E",  # população total
         "B19013_001E",  # renda mediana domiciliar (USD)
+        "B20002_001E",  # renda mediana individual do trabalhador 16+ com rendimento (USD)
+        "B19301_001E",  # renda per capita anual (USD)
         "B15003_001E",  # população 25+ (base p/ escolaridade)
         "B15003_022E",  # bacharelado
         "B15003_023E",  # mestrado
@@ -93,8 +95,8 @@ def get_acs_indicadores(api_key: str | None = None) -> pd.DataFrame:
     df = df[df["state"].isin(FIPS_50_STATES_DC)].copy()
 
     numeric_cols = [
-        "B01003_001E", "B19013_001E", "B15003_001E",
-        "B15003_022E", "B15003_023E", "B15003_024E", "B15003_025E",
+        "B01003_001E", "B19013_001E", "B20002_001E", "B19301_001E",
+        "B15003_001E", "B15003_022E", "B15003_023E", "B15003_024E", "B15003_025E",
     ]
     for col in numeric_cols:
         df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -110,8 +112,20 @@ def get_acs_indicadores(api_key: str | None = None) -> pd.DataFrame:
             "state": "state_fips",
             "B01003_001E": "populacao",
             "B19013_001E": "renda_mediana_domiciliar_usd",
+            "B20002_001E": "renda_individual_trabalhador_usd",
+            "B19301_001E": "renda_per_capita_usd",
         }
-    )[["state_fips", "estado_nome", "populacao", "renda_mediana_domiciliar_usd", "pct_bacharelado_ou_mais"]]
+    )[
+        [
+            "state_fips",
+            "estado_nome",
+            "populacao",
+            "renda_mediana_domiciliar_usd",
+            "renda_individual_trabalhador_usd",
+            "renda_per_capita_usd",
+            "pct_bacharelado_ou_mais",
+        ]
+    ]
 
 
 def build_dataset(api_key: str | None = None) -> pd.DataFrame:

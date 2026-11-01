@@ -49,8 +49,11 @@ def build() -> dict:
             "areaKm2": row["area_km2"],
             "densidadeHabKm2": row["densidade_hab_km2"],
             "rendaValor": row["renda_valor"],
+            "rendaAnualValor": row["renda_anual_valor"],
             "rendaMoeda": row["renda_moeda"],
             "rendaUnidade": row["renda_unidade"],
+            "rendaUsdMes": row["renda_usd_mes"],
+            "rendaPppMes": row["renda_ppp_mes"],
             "rendaIndiceRelativo": row["renda_indice_relativo"],
             "pctEducacaoSuperior": row["pct_educacao_superior"],
         }

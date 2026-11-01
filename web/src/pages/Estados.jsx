@@ -30,6 +30,9 @@ function useStatsPais(lista) {
       areaTotal,
       densidadeMedia: popTotal / areaTotal,
       rendaMedia: media("rendaValor"),
+      rendaAnualMedia: media("rendaAnualValor"),
+      rendaUsdMesMedia: media("rendaUsdMes"),
+      rendaPppMesMedia: media("rendaPppMes"),
       rendaMoeda: lista[0].rendaMoeda,
       rendaUnidade: lista[0].rendaUnidade,
       rendaStdIndice: desvio("rendaIndiceRelativo"),
@@ -193,13 +196,46 @@ export default function Estados() {
                 <LinhaComp label="Área" aTxt={`${fmtInt(a.areaKm2)} km²`} bTxt={`${fmtInt(b.areaKm2)} km²`} aRaw={a.areaKm2} bRaw={b.areaKm2} comBarra />
                 <LinhaComp label="Densidade demográfica" aTxt={`${fmt1(a.densidadeHabKm2)} hab/km²`} bTxt={`${fmt1(b.densidadeHabKm2)} hab/km²`} aRaw={a.densidadeHabKm2} bRaw={b.densidadeHabKm2} comBarra />
                 <LinhaComp
-                  label="Renda média"
-                  aTxt={(a.rendaMoeda === "BRL" ? "R$ " : "US$ ") + fmtInt(a.rendaValor)}
-                  bTxt={(b.rendaMoeda === "BRL" ? "R$ " : "US$ ") + fmtInt(b.rendaValor)}
+                  label="Renda média mensal (moeda local)"
+                  aTxt={(a.rendaMoeda === "BRL" ? "R$ " : "US$ ") + fmtInt(a.rendaValor) + " / mês"}
+                  bTxt={(b.rendaMoeda === "BRL" ? "R$ " : "US$ ") + fmtInt(b.rendaValor) + " / mês"}
                   comBarra={false}
-                  nota={`${a.rendaUnidade} · ${b.rendaUnidade} — moedas diferentes, não comparar direto`}
+                  nota="Valores mensais nominais na moeda de cada país (ambos no mesmo molde mensal)"
                 />
-                <LinhaComp label="Renda relativa (100 = média do país)" aTxt={fmt1(a.rendaIndiceRelativo)} bTxt={fmt1(b.rendaIndiceRelativo)} aRaw={a.rendaIndiceRelativo} bRaw={b.rendaIndiceRelativo} comBarra />
+                <LinhaComp
+                  label="Renda anual equivalente (moeda local)"
+                  aTxt={(a.rendaMoeda === "BRL" ? "R$ " : "US$ ") + fmtInt(a.rendaAnualValor) + " / ano"}
+                  bTxt={(b.rendaMoeda === "BRL" ? "R$ " : "US$ ") + fmtInt(b.rendaAnualValor) + " / ano"}
+                  comBarra={false}
+                  nota="Base anualizada padronizada (12 meses)"
+                />
+                <LinhaComp
+                  label="Renda mensal em Dólar Comercial (USD)"
+                  aTxt={"US$ " + fmtInt(a.rendaUsdMes) + " / mês"}
+                  bTxt={"US$ " + fmtInt(b.rendaUsdMes) + " / mês"}
+                  aRaw={a.rendaUsdMes}
+                  bRaw={b.rendaUsdMes}
+                  comBarra={true}
+                  nota="Convertido pela taxa cambial nominal de mercado (1 USD = R$ 5,45)"
+                />
+                <LinhaComp
+                  label="Poder de Compra Real (USD PPP / mês)"
+                  aTxt={"US$ " + fmtInt(a.rendaPppMes) + " PPP / mês"}
+                  bTxt={"US$ " + fmtInt(b.rendaPppMes) + " PPP / mês"}
+                  aRaw={a.rendaPppMes}
+                  bRaw={b.rendaPppMes}
+                  comBarra={true}
+                  nota="Ajustado pelo custo de vida via Paridade de Poder de Compra (Banco Mundial - PPP: R$ 2,85 / USD)"
+                />
+                <LinhaComp
+                  label="Renda relativa (100 = média do país)"
+                  aTxt={fmt1(a.rendaIndiceRelativo)}
+                  bTxt={fmt1(b.rendaIndiceRelativo)}
+                  aRaw={a.rendaIndiceRelativo}
+                  bRaw={b.rendaIndiceRelativo}
+                  comBarra={true}
+                  nota="Posição relativa do estado frente à média da sua própria federação"
+                />
                 <LinhaComp label="Com superior completo (25+ anos)" aTxt={fmtPct(a.pctEducacaoSuperior)} bTxt={fmtPct(b.pctEducacaoSuperior)} aRaw={a.pctEducacaoSuperior} bRaw={b.pctEducacaoSuperior} comBarra />
               </tbody>
             </table>
@@ -223,12 +259,30 @@ export default function Estados() {
                 <LinhaGeral label="População total" valBr={fmtMilhoes(br.popTotal)} valUs={fmtMilhoes(us.popTotal)} />
                 <LinhaGeral label="Densidade média" valBr={`${fmt1(br.densidadeMedia)} hab/km²`} valUs={`${fmt1(us.densidadeMedia)} hab/km²`} />
                 <LinhaGeral
-                  label="Renda média"
-                  valBr={`R$ ${fmtInt(br.rendaMedia)}`}
-                  valUs={`US$ ${fmtInt(us.rendaMedia)}`}
-                  nota={`${br.rendaUnidade} · ${us.rendaUnidade} — não comparável em valor bruto.`}
+                  label="Renda média mensal (moeda local)"
+                  valBr={`R$ ${fmtInt(br.rendaMedia)} / mês`}
+                  valUs={`US$ ${fmtInt(us.rendaMedia)} / mês`}
+                  nota="Ambos harmonizados na periodicidade mensal e escopo individual"
                 />
-                <LinhaGeral label="Desigualdade de renda entre estados" valBr={`${fmt1(br.rendaStdIndice)} pontos`} valUs={`${fmt1(us.rendaStdIndice)} pontos`} />
+                <LinhaGeral
+                  label="Renda média anual equivalente"
+                  valBr={`R$ ${fmtInt(br.rendaAnualMedia)} / ano`}
+                  valUs={`US$ ${fmtInt(us.rendaAnualMedia)} / ano`}
+                  nota="Base anualizada padronizada (12 meses)"
+                />
+                <LinhaGeral
+                  label="Renda média mensal em Dólar Comercial"
+                  valBr={`US$ ${fmtInt(br.rendaUsdMesMedia)} / mês`}
+                  valUs={`US$ ${fmtInt(us.rendaMedia)} / mês`}
+                  nota="Convertido pelo câmbio de mercado (1 USD = R$ 5,45)"
+                />
+                <LinhaGeral
+                  label="Renda média em Poder de Compra (PPP)"
+                  valBr={`US$ ${fmtInt(br.rendaPppMesMedia)} PPP / mês`}
+                  valUs={`US$ ${fmtInt(us.rendaMedia)} PPP / mês`}
+                  nota="Ajustado pelo custo de vida (Banco Mundial)"
+                />
+                <LinhaGeral label="Desigualdade de renda entre estados" valBr={`${fmt1(br.rendaStdIndice)} pontos`} valUs={`${fmt1(us.rendaStdIndice)} pontos`} nota="Desvio-padrão do índice de renda relativa" />
                 <LinhaGeral label="Com superior completo (25+ anos)" valBr={fmtPct(br.educMedia)} valUs={fmtPct(us.educMedia)} />
               </tbody>
             </table>
@@ -241,13 +295,13 @@ export default function Estados() {
           <div className="tabela-wrap">
             <table>
               <thead>
-                <tr><th>Região</th><th>Renda média</th><th>% superior completo</th><th>População média/UF</th></tr>
+                <tr><th>Região</th><th>Renda média mensal</th><th>% superior completo</th><th>População média/UF</th></tr>
               </thead>
               <tbody>
                 {regioesBr.map((r) => (
                   <tr key={r.regiao}>
                     <td className="label">{r.regiao}</td>
-                    <td className="val">R$ {fmtInt(r.rendaValor)}</td>
+                    <td className="val">R$ {fmtInt(r.rendaValor)} / mês</td>
                     <td className="val">{fmtPct(r.pctEducacaoSuperior)}</td>
                     <td className="val">{fmtMilhoes(r.populacao)}</td>
                   </tr>
